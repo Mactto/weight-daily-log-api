@@ -1,0 +1,133 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm[toml]"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+authors = [{ email = "contact@elice.io" }, { name = "elice.io" }]
+description = "A default python structure for elice backend API server"
+name = "elice-backend-api-default-python"
+readme = "README.md"
+
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Operating System :: POSIX",
+    "Operating System :: MacOS :: MacOS X",
+]
+
+requires-python = ">=3.10,<3.11"
+dependencies = [
+    "alembic==1.11.1",
+    "asyncpg==0.27.0",
+    "elice-backend-components==22.2.1",
+    "fastapi==0.98.0",
+    "gunicorn==20.1.0",
+    "httpx==0.24.1",
+    "pydantic[dotenv]==1.10.9",
+    "pyjwt==2.5.0",
+    "python-multipart==0.0.5",
+    "sqlalchemy[asyncio]==2.0.17",
+    "uvicorn[standard]==0.22.0",
+    "yarl==1.9.2",
+]
+
+dynamic = ["version"]
+
+
+[project.optional-dependencies]
+dev = [
+    "asgi-lifespan==2.0.0",
+    "autopep8==2.0.1",
+    "bandit==1.7.4",
+    "black==23.3.0",
+    "flake8-bugbear==23.2.13",
+    "flake8-datetimez==20.10.0",
+    "flake8-isort==6.0.0",
+    "flake8-logging-format==0.9.0",
+    "flake8==6.0.0",
+    "lz4==4.3.2",
+    "mypy==1.4.1",
+    "pip-tools",                    # do not pin
+    "pytest-asyncio==0.20.3",
+    "pytest-cov==4.0.0",
+    "pytest==7.2.1",
+    "safety==2.4.0b1",
+]
+
+
+[tool.black]
+line-length = 88
+
+
+[tool.coverage.run]
+source = ["app/*"]
+
+
+[tool.coverage.report]
+precision = 2
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:"]
+
+
+[tool.isort]
+profile = "black"
+line_length = 88
+virtual_env = "python-env"
+
+
+[tool.mypy]
+python_version = "3.10"
+
+plugins = "pydantic.mypy"
+
+disallow_untyped_defs = true
+check_untyped_defs = true
+
+warn_return_any = true
+
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = "app._version"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "asyncpg"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "pytest"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "_pytest.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "setuptools_scm"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "sqlalchemy.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "uvicorn"
+ignore_missing_imports = true
+
+
+[tool.pytest.ini_options]
+addopts = "--cov-report html --cov=app"
+asyncio_mode = "strict"
+testpaths = ["tests"]
+
+
+[tool.setuptools]
+packages = ["app"]
+
+
+[tool.setuptools_scm]
+write_to = "app/_version.py"
