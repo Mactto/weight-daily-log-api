@@ -44,7 +44,7 @@ def init_logger(app_settings: AppSettings) -> logging.Logger:
     )
 
     return _init_logger(
-        f"elice-backend-api-default-python@{__version__}",
+        f"sample-api@{__version__}",
         __name__,
         app_logger_level=app_logger_level,
         stdout_handler_level=app_logger_level,

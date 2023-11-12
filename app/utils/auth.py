@@ -82,7 +82,7 @@ def create_access_token(
             "account_login_id": str(account_login_id),
             "exp": current + _TOKEN_TTL,
             "iat": current,
-            "iss": "elice-backend-api-default-python",
+            "iss": "sample-api",
         },
         key=AppCtx.current.settings.SECRET_KEY.get_secret_value(),
         algorithm="HS256",

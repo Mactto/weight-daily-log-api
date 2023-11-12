@@ -4,9 +4,9 @@ build-backend = "setuptools.build_meta"
 
 
 [project]
-authors = [{ email = "contact@elice.io" }, { name = "elice.io" }]
-description = "A default python structure for elice backend API server"
-name = "elice-backend-api-default-python"
+authors = [{ email = "contact@sample.io" }, { name = "sample.io" }]
+description = "A default python structure for sample backend API server"
+name = "sample-api"
 readme = "README.md"
 
 classifiers = [
@@ -21,7 +21,6 @@ requires-python = ">=3.10,<3.11"
 dependencies = [
     "alembic==1.11.1",
     "asyncpg==0.27.0",
-    "elice-backend-components==22.2.1",
     "fastapi==0.98.0",
     "gunicorn==20.1.0",
     "httpx==0.24.1",
