@@ -4,12 +4,10 @@ import os
 
 import uvicorn
 
-from app import create_app, init_logger
+from app import create_app
 from app.settings import AppSettings
 
 app_settings = AppSettings()
-
-init_logger(app_settings)
 
 app = create_app(app_settings)
 

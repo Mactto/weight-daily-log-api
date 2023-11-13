@@ -2,7 +2,6 @@ import functools
 import logging
 import re
 
-from ebc.log_helper import init_logger as _init_logger
 from fastapi import FastAPI, Request, Response
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -18,40 +17,7 @@ from .utils.fastapi import (
     validation_error_hadler,
 )
 
-try:
-    from setuptools_scm import get_version
-
-    __version__ = get_version(root="..", relative_to=__file__)
-except LookupError:
-    try:
-        from ._version import version
-
-        __version__ = version
-    except ModuleNotFoundError:
-        raise RuntimeError(
-            "Cannot determine version: "
-            "check whether git repository is initialized "
-            "or _version.py file exists."
-        )
-
-
 logger = logging.getLogger(__name__)
-
-
-def init_logger(app_settings: AppSettings) -> logging.Logger:
-    app_logger_level = (
-        logging.DEBUG if app_settings.LOGGING_DEBUG_LEVEL else logging.INFO
-    )
-
-    return _init_logger(
-        f"sample-api@{__version__}",
-        __name__,
-        app_logger_level=app_logger_level,
-        stdout_handler_level=app_logger_level,
-        slack_url=app_settings.LOGGING_SLACK_URL,
-        sentry_dsn=app_settings.LOGGING_SENTRY_DSN,
-        additional_loggers=[],
-    )
 
 
 def create_app(app_settings: AppSettings) -> FastAPI:

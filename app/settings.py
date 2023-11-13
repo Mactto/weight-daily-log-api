@@ -36,7 +36,7 @@ class AppSettings(BaseSettings):
 
     DB_URI: AnyUrl = Field(
         default=AnyUrl(
-            url=("postgresql+asyncpg://" "sample:password@127.0.0.1:25000/example"),
+            url=("postgresql+asyncpg://" "sample:password@127.0.0.1:5432/example"),
             scheme="postgresql+asyncpg",
         ),
         description="DB connection URI.",

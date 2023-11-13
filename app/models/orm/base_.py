@@ -2,12 +2,11 @@ from __future__ import annotations
 
 import datetime
 import uuid
-from typing import TYPE_CHECKING, Any, ClassVar
+from typing import TYPE_CHECKING
 
 from sqlalchemy import types as sa_types
-from sqlalchemy.dialects import postgresql as pg_dialect
 from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr, mapped_column
-from sqlalchemy.schema import Computed, Index
+from sqlalchemy.schema import Index
 
 if TYPE_CHECKING:
     from sqlalchemy.sql.schema import ColumnCollectionConstraint, Table
@@ -15,20 +14,6 @@ if TYPE_CHECKING:
 
 class Base(DeclarativeBase):
     __abstract__ = True
-
-    ern_prefix: ClassVar[str] = "ern:library::"
-
-    tags: Mapped[dict[str, Any]] = mapped_column(
-        pg_dialect.JSONB(none_as_null=True),
-        default={},
-        nullable=False,
-    )
-
-    condition: Mapped[dict[str, Any]] = mapped_column(
-        pg_dialect.JSONB(none_as_null=True),
-        nullable=False,
-        default={},
-    )
 
     created: Mapped[datetime.datetime] = mapped_column(
         sa_types.TIMESTAMP(timezone=True),
@@ -40,37 +25,9 @@ class Base(DeclarativeBase):
         onupdate=lambda: datetime.datetime.now(datetime.timezone.utc),
     )
 
-    @declared_attr
-    def effective_erns(cls) -> Mapped[list[str]]:
-        return mapped_column(
-            pg_dialect.ARRAY(sa_types.Text),
-            Computed(
-                f"""
-                ARRAY[
-                    (\'{cls.ern_prefix}{cls.__tablename__}/\' || id::text),
-                    \'{cls.ern_prefix}/*\'
-                ]::text[]
-                """
-            ),
-            nullable=False,
-            index=True,
-        )
-
     @declared_attr.directive
     def __table_args__(cls) -> tuple:
         return (
-            Index(
-                None,
-                cls.tags,  # type: ignore
-                postgresql_using="gin",
-                postgresql_ops={"tags": "jsonb_path_ops"},
-            ),
-            Index(
-                None,
-                cls.condition,  # type: ignore
-                postgresql_using="gin",
-                postgresql_ops={"condition": "jsonb_path_ops"},
-            ),
             Index(
                 None,
                 cls.created,  # type:ignore

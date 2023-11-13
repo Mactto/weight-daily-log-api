@@ -17,7 +17,7 @@ class Account(Base):
     id: Mapped[uuid.UUID] = mapped_column(
         pg_dialect.UUID(as_uuid=True),
         primary_key=True,
-        server_default=sa_func.gen_random_uuid(),
+        server_default=sa_func.uuid_generate_v4_v4(),
     )
 
     username: Mapped[str] = mapped_column(sqltypes.String, nullable=False, unique=True)
@@ -33,7 +33,7 @@ class AccountLogin(Base):
     id: Mapped[uuid.UUID] = mapped_column(
         pg_dialect.UUID(as_uuid=True),
         primary_key=True,
-        server_default=sa_func.gen_random_uuid(),
+        server_default=sa_func.uuid_generate_v4(),
     )
 
     ipaddr: Mapped[str] = mapped_column(sqltypes.String, nullable=False)
