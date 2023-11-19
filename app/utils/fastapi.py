@@ -47,6 +47,8 @@ class LogicErrorCodeEnum(str, enum.Enum):
 
     WrongPassword = "wrong_password"
 
+    AlreadyLogged = "already_logged"
+
     @property
     def desc(self) -> str:
         return {
@@ -56,6 +58,7 @@ class LogicErrorCodeEnum(str, enum.Enum):
             ),
             self.RaceCondition: "Race condition occurred. try again.",
             self.WrongPassword: "Failed to login with incorrect password.",
+            self.AlreadyLogged: "Already exist today log",
         }[self]
 
 
